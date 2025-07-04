@@ -37,7 +37,7 @@ def generate():
     )
 
     try:
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('models/gemini-1.5-flash')
         response = model.generate_content(prompt)
 
         if response and response.text:
