@@ -40,7 +40,7 @@ Respond with a short paragraph (2 to 5 lines) that feels natural and emotionally
   responseBox.textContent = "Thinking...";
 
   try {
-    const res = await fetch("https://echoheart.onrender.com", {
+    const res = await fetch("https://echoheart.onrender.com/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt: fakePrompt })
