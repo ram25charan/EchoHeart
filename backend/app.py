@@ -1,27 +1,51 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
-CORS(app)  # Enable CORS for frontend-backend communication
+# Configure Gemini API
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-@app.route('/generate', methods=['POST'])
+# Initialize Flask app
+app = Flask(__name__)
+CORS(app)
+
+@app.route("/")
+def home():
+    return "EchoHeart Backend Running"
+
+@app.route("/generate", methods=["POST"])
 def generate():
     data = request.get_json()
-    feeling = data.get('feeling')
-    tone = data.get('tone')
+    feeling = data.get("feeling")
+    tone = data.get("tone")
 
-    # Basic response logic for testing
     if not feeling or not tone:
-        return jsonify({'message': 'Invalid input'}), 400
+        return jsonify({"message": "Invalid input"}), 400
 
-    message = f"Help me craft a message that conveys the feeling of being {feeling}, using a {tone} tone. Make it empathetic, supportive, and suitable for personal reflection or sharing with a friend."
+    prompt = (
+        f"You are an empathetic AI. A user is feeling '{feeling}' and wants a response in a '{tone}' tone.\n"
+        f"Your task is to:\n"
+        f"- Understand their emotion\n"
+        f"- Reflect the chosen tone\n"
+        f"- Comfort or uplift them\n"
+        f"Respond with a short, natural paragraph (2 to 5 lines)."
+    )
 
-    return jsonify({'message': message})
+    try:
+        model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content(prompt)
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Use PORT env var if set (Render requires this)
-    app.run(host='0.0.0.0', port=port)
+        if response and response.text:
+            return jsonify({"message": response.text.strip()})
+        else:
+            return jsonify({"message": "Failed to generate a response."}), 500
+    except Exception as e:
+        return jsonify({"message": "Server error", "error": str(e)}), 500
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
