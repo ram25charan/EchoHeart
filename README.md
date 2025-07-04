@@ -5,7 +5,7 @@ It uses Google’s Gemini AI on the backend, with a clean and responsive fronten
 
 🌟 What It Does: 
 You pick how you're feeling (e.g., Anxious, Happy, Lonely).
-You pick the tone you want the response to be in (e.g., Comforting, Cheerful, Honest).
+You pick the tone you want the response to be in (e.g., gentle, funny, mindful).
 You get a short, AI-generated message tailored to both your feeling and the tone.
 It’s designed to feel like a little check-in — a gentle nudge when you need it.
 
