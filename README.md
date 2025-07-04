@@ -9,7 +9,7 @@ You pick the tone you want the response to be in (e.g., gentle, funny, mindful).
 You get a short, AI-generated message tailored to both your feeling and the tone.
 It’s designed to feel like a little check-in — a gentle nudge when you need it.
 
-🛠️ Tech Stack
+🛠️ Tech Stack: 
 Frontend: HTML, CSS, JavaScript ;
 Backend: Python (Flask) ;
 AI: Gemini API (from Google) ;
