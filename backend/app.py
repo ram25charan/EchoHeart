@@ -1,32 +1,26 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from dotenv import load_dotenv
 import os
-import google.generativeai as genai
+from dotenv import load_dotenv
 
 load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
-genai.configure(api_key=api_key)
-
-model = genai.GenerativeModel("models/gemini-1.5-flash")
 
 app = Flask(__name__)
-CORS(app)
+CORS(app)  # Enable CORS for frontend-backend communication
 
-@app.route("/generate", methods=["POST"])
+@app.route('/generate', methods=['POST'])
 def generate():
-    data = request.json
-    prompt = data.get("prompt", "")
+    data = request.get_json()
+    feeling = data.get('feeling')
+    tone = data.get('tone')
 
-    if not prompt:
-        return jsonify({"message": "Prompt missing"}), 400
+    # Basic response logic for testing
+    if not feeling or not tone:
+        return jsonify({'message': 'Invalid input'}), 400
 
-    try:
-        response = model.generate_content(prompt)
-        return jsonify({"message": response.text.strip()})
-    except Exception as e:
-        print("Error:", e)
-        return jsonify({"message": "Gemini generation failed"}), 500
+    message = f"You are feeling {feeling}, and you'd like to express it in a {tone} tone."
+    return jsonify({'message': message})
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))  # Use PORT env var if set (Render requires this)
+    app.run(host='0.0.0.0', port=port)
