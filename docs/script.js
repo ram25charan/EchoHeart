@@ -27,27 +27,20 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
     return;
   }
 
-  const fakePrompt = `
-You're an empathetic AI. A user is feeling "${selectedFeeling}" and wants a response in a "${selectedTone}" tone.
-Your task is to write a message that:
-- Understands their emotion
-- Reflects the chosen tone
-- Comforts or uplifts them
-
-Respond with a short paragraph (2 to 5 lines) that feels natural and emotionally supportive.
-  `;
-
   responseBox.textContent = "Thinking...";
 
   try {
     const res = await fetch("https://echoheart.onrender.com/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: fakePrompt })
+      body: JSON.stringify({
+        feeling: selectedFeeling,
+        tone: selectedTone
+      })
     });
 
     const data = await res.json();
-    responseBox.textContent = data.message || "No response from Gemini.";
+    responseBox.textContent = data.message || "No response from server.";
   } catch (err) {
     responseBox.textContent = "Oops! Something went wrong.";
   }
