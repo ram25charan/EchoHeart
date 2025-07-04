@@ -18,7 +18,8 @@ def generate():
     if not feeling or not tone:
         return jsonify({'message': 'Invalid input'}), 400
 
-    message = f"You are feeling {feeling}, and you'd like to express it in a {tone} tone."
+    message = f"Help me craft a message that conveys the feeling of being {feeling}, using a {tone} tone. Make it empathetic, supportive, and suitable for personal reflection or sharing with a friend."
+
     return jsonify({'message': message})
 
 if __name__ == '__main__':
